@@ -141,10 +141,14 @@ module.exports = function build(settings, task) {
 
     task("forbidden", [], function() {
         this.forbidden("examples/**/*", [
-            /<script[^>]*type *= *["'][^"'\/]*["']/g,
-            /<script[^>]*type *= *["']text\/cindyscript["']/g,
-            /.*firstDrawing.*/g,
-            /.*cinderella\.de\/.*\/Cindy.*\.js.*/g,
+            // Correct MIME type is "text/x-cindyscript"
+            /<script[^>]*type *= *["'][^"'\/]*["']/g,          // requires /
+            /<script[^>]*type *= *["']text\/cindyscript["']/g, // requires x-
+            /.*firstDrawing.*/g, // excessive copy & paste of old example
+            /.*(cinderella\.de|cindyjs\.org)\/.*\/Cindy.*\.js.*/g, // remote
+        ]);
+        this.forbidden("ref/**/*.md", [
+            /^#.*`.*<[A-Za-z0-9]+>.*?`/mg, // use ‹…› instead
         ]);
     });
 
@@ -238,7 +242,7 @@ module.exports = function build(settings, task) {
         .concat(c3d_primitives.map(
             function(name) { return name + "-frag.glsl"; }));
     var c3d_str_res = c3d_shaders.map(function(name) {
-        return "src/str/cindy3d/" + name;
+        return "plugins/cindy3d/src/str/" + name;
     });
     var c3d_mods = [
         "ShaderProgram",
@@ -275,13 +279,13 @@ module.exports = function build(settings, task) {
             source_map_format: "V3",
             source_map_location_mapping: [
                 "build/js/|",
-                "src/js/|../../src/js/",
+                "src/js/|../../plugins/cindy3d/src/js/",
             ],
-            output_wrapper_file: "src/js/cindy3d/Cindy3D.js.wrapper",
+            output_wrapper_file: "plugins/cindy3d/src/js/Cindy3D.js.wrapper",
             js_output_file: "build/js/Cindy3D.js",
-            externs: "src/js/cindy3d/cindyjs.externs",
+            externs: "plugins/cindy3d/src/js/cindyjs.externs",
             js: ["build/js/c3dres.js"].concat(c3d_mods.map(function(name) {
-                return "src/js/cindy3d/" + name + ".js";
+                return "plugins/cindy3d/src/js/" + name + ".js";
             })),
         };
         if (this.setting("cindy3d-dbg") !== undefined) {
@@ -302,14 +306,12 @@ module.exports = function build(settings, task) {
 
     var cgl_primitives = "sphere cylinder triangle texq".split(" ");
 
-    var cgl_str_res = glob.sync("src/str/cindygl/*.glsl");
+    var cgl_str_res = glob.sync("plugins/cindygl/src/str/*.glsl");
     
     var cgl_mods = [
         "Init",
         "General",
-        "Interface",
         "CanvasWrapper",
-        "ShaderProgram",
         "Renderer",
         "Plugin",
         "TypeInference",
@@ -318,6 +320,11 @@ module.exports = function build(settings, task) {
         "CodeBuilder",
         "TextureReader",
         "WebGLImplementation"
+    ];
+
+    var cgl_mods_from_c3d = [
+        "Interface",
+        "ShaderProgram"
     ];
 
     task("cglres", [], function() {
@@ -339,13 +346,15 @@ module.exports = function build(settings, task) {
             source_map_format: "V3",
             source_map_location_mapping: [
                 "build/js/|",
-                "src/js/|../../src/js/",
+                "src/js/|../../plugins/cindygl/src/js/",
             ],
-            output_wrapper_file: "src/js/cindygl/CindyGL.js.wrapper",
+            output_wrapper_file: "plugins/cindygl/src/js/CindyGL.js.wrapper",
             js_output_file: "build/js/CindyGL.js",
-            externs: "src/js/cindygl/cindyjs.externs",
+            externs: "plugins/cindygl/src/js/cindyjs.externs",
             js: ["build/js/cglres.js"].concat(cgl_mods.map(function(name) {
-                return "src/js/cindygl/" + name + ".js";
+                return "plugins/cindygl/src/js/" + name + ".js";
+            })).concat(cgl_mods_from_c3d.map(function(name) {
+                return "plugins/cindy3d/src/js/" + name + ".js";
             })),
         };
         if (this.setting("cindygl-dbg") !== undefined) {
@@ -435,7 +444,7 @@ module.exports = function build(settings, task) {
     });
 
     task("katex-plugin", [], function() {
-        this.copy("src/js/katex/katex-plugin.js", "build/js/katex-plugin.js");
+        this.copy("plugins/katex/src/js/katex-plugin.js", "build/js/katex-plugin.js");
     });
 
     task("katex", ["katex_src", "katex-plugin"]);
