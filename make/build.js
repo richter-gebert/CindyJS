@@ -4,6 +4,7 @@ var glob = require("glob");
 var path = require("path");
 var Q = require("q");
 
+var getversion = require("./getversion");
 var src = require("./sources");
 
 module.exports = function build(settings, task) {
@@ -36,15 +37,20 @@ module.exports = function build(settings, task) {
     // Build different flavors of Cindy.js
     //////////////////////////////////////////////////////////////////////
 
+    var version = getversion.factory("build/js/Version.js", "var version");
+
     task("plain", [], function() {
+        version(this);
         this.concat(src.srcs, "build/js/Cindy.plain.js");
     });
 
     task("ours", [], function() {
+        version(this);
         this.concat(src.ours, "build/js/ours.js");
     });
 
     task("exposed", [], function() {
+        version(this);
         this.concat(
             src.lib.concat("src/js/expose.js", src.inclosure),
             "build/js/exposed.js");
@@ -94,7 +100,7 @@ module.exports = function build(settings, task) {
     var beautify_args = [
         "--replace",
         "--config", "Administration/beautify.conf",
-        src.ours,
+        src.ours.filter(function(name) { return !/^build\//.test(name); }),
     ];
 
     task("beautify", [], function() {
@@ -131,7 +137,7 @@ module.exports = function build(settings, task) {
     // Run separate unit tests to test various interna
     //////////////////////////////////////////////////////////////////////
 
-    task("unittests", ["exposed"], function() {
+    task("unittests", ["exposed", "plain"], function() {
         this.cmdscript("mocha", "tests");
     });
 
@@ -273,6 +279,7 @@ module.exports = function build(settings, task) {
         var opts = {
             language_in: "ECMASCRIPT6_STRICT",
             language_out: "ECMASCRIPT5_STRICT",
+            dependency_mode: "LOOSE",
             create_source_map: "build/js/Cindy3D.js.map",
             compilation_level: this.setting("c3d_closure_level"),
             warning_level: this.setting("c3d_closure_warnings"),
@@ -289,7 +296,7 @@ module.exports = function build(settings, task) {
             })),
         };
         if (this.setting("cindy3d-dbg") !== undefined) {
-            opts.transpile_only = true;
+            opts.compilation_level = "WHITESPACE_ONLY";
             opts.formatting = "PRETTY_PRINT";
         }
         this.closureCompiler(closure_jar, opts);
@@ -328,6 +335,7 @@ module.exports = function build(settings, task) {
     ];
 
     task("cglres", [], function() {
+        cgl_str_res.forEach(this.input, this);
         this.node(
             "tools/files2json.js",
             "-varname=cgl_resources",
@@ -340,6 +348,7 @@ module.exports = function build(settings, task) {
         var opts = {
             language_in: "ECMASCRIPT6_STRICT",
             language_out: "ECMASCRIPT5_STRICT",
+            dependency_mode: "LOOSE",
             create_source_map: "build/js/CindyGL.js.map",
             compilation_level: this.setting("cgl_closure_level"),
             warning_level: this.setting("cgl_closure_warnings"),
@@ -358,7 +367,7 @@ module.exports = function build(settings, task) {
             })),
         };
         if (this.setting("cindygl-dbg") !== undefined) {
-            opts.transpile_only = true;
+            opts.compilation_level = "WHITESPACE_ONLY";
             opts.formatting = "PRETTY_PRINT";
         }
         this.closureCompiler(closure_jar, opts);

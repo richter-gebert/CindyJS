@@ -2,6 +2,8 @@
 
 #### The simulation environment: `simulation()`
 
+**Not available in CindyJS yet!**
+
 **Description:**
 This operator provides a handle to the simulation environment.
 The simulation environment offers several fields than can be used to access its global properties.
@@ -19,6 +21,8 @@ The simulation environment offers several fields than can be used to access its 
 
 #### Applying a force: `addforce(‹mass›,‹vec›)`
 
+**Not available in CindyJS yet!**
+
 **Description:**
 Applying a force `‹vec›` to an existing mass `‹mass›`.
 This operator is useful to implement user defined force fields.
@@ -28,6 +32,8 @@ It should be called in the `Integration Tick` slot.
 
 #### Applying a force: `setforce(‹mass›,‹vec›)`
 
+**Not available in CindyJS yet!**
+
 **Description:**
 Setting the force `‹vec›` for an existing mass `‹mass›`.
 This operator is very useful to implement user defined force fields.
@@ -36,6 +42,8 @@ It should be called in the `Integration Tick` slot.
 ------
 
 #### Probing particle forces: `force(‹vector›)`
+
+**Not available in CindyJS yet!**
 
 **Description:**
 The operator `force` is closely related to physics simulations in [CindyLab](CindyLab.md).
@@ -48,9 +56,7 @@ If no modifiers are used, the operator assumes that the probe particle has `mass
 The following picture was generated using the `drawforces` operator and a color plot of the `force` operator.
 It shows the force field and force strength of the electrostatic field of two charges.
 
-| ![Image](img/Flux.png) |
-| ---------------------- |
-| ****                   |
+![Image](img/Flux.png)
 
     > A.charge=(|C,G|-3)*3;
     > B.charge=(|E,H|-3)*3;

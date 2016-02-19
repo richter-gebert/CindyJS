@@ -130,6 +130,8 @@ The cross product is a three-dimensional vector that is orthogonal to the other 
 
 #### The type of an object: `geotype(‹list›)`
 
+**Not available in CindyJS yet!**
+
 **Description:**
 This operator determines whether an object has an explicit geometric meaning.
 It returns a string that is either `"POINT"`, `"LINE"`, or `"NONE"`.
@@ -168,7 +170,7 @@ The point `[x,b]` is converted to the complex number `a+i∗b`.
 
 ------
 
-#### Complex numbers to points: `gauss(‹point›)`
+#### Complex numbers to points: `gauss(‹number›)`
 
 **Description:**
 This operator is the opposite of the previous one.

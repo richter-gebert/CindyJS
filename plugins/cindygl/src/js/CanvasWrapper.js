@@ -137,9 +137,7 @@ CanvasWrapper.prototype.copyTextureToCanvas = function() {
 }
 
 CanvasWrapper.prototype.drawTo = function(context, x, y) {
-  //TODO: render texture this.textures[this.it] on glcanvas
-  glcanvas.width = this.sizeX;
-  glcanvas.height = this.sizeY;
+  enlargeCanvasIfRequired(this.sizeX, this.sizeY);
   gl.viewport(0, 0, this.sizeXP, this.sizeYP);
 
   this.shaderProgram.use(gl);
@@ -151,7 +149,7 @@ CanvasWrapper.prototype.drawTo = function(context, x, y) {
   gl.bindFramebuffer(gl.FRAMEBUFFER, null); //renders to glcanvas
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   gl.flush();
-  context.drawImage(glcanvas, 0, 0, this.sizeX, this.sizeY, x, y, this.sizeX, this.sizeY);
+  context.drawImage(glcanvas, 0, glcanvas.height - this.sizeY, this.sizeX, this.sizeY, x, y, this.sizeX, this.sizeY);
 };
 
 

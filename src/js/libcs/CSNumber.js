@@ -4,18 +4,19 @@
 var CSNumber = {};
 CSNumber._helper = {};
 CSNumber._helper.roundingfactor = 1e4;
+CSNumber._helper.angleroundingfactor = 1e1;
 
-CSNumber._helper.niceround = function(a) {
-    return Math.round(a * CSNumber._helper.roundingfactor) /
-        CSNumber._helper.roundingfactor;
+CSNumber._helper.niceround = function(a, roundingfactor) {
+    return Math.round(a * roundingfactor) / roundingfactor;
 };
 
-CSNumber.niceprint = function(a) {
+CSNumber.niceprint = function(a, roundingfactor) {
+    roundingfactor = roundingfactor || CSNumber._helper.roundingfactor;
     if (a.usage === "Angle") {
         return CSNumber._helper.niceangle(a);
     }
-    var real = CSNumber._helper.niceround(a.value.real);
-    var imag = CSNumber._helper.niceround(a.value.imag);
+    var real = CSNumber._helper.niceround(a.value.real, roundingfactor);
+    var imag = CSNumber._helper.niceround(a.value.imag, roundingfactor);
     if (imag === 0) {
         return "" + real;
     }
@@ -53,7 +54,9 @@ CSNumber._helper.niceangle = function(a) {
         return CSNumber.niceprint(General.withUsage(a, null));
     if (typeof unit === "function")
         return unit(a);
-    var num = CSNumber.niceprint(CSNumber.realmult(unit * PERTWOPI, a));
+    var num = CSNumber.niceprint(
+        CSNumber.realmult(unit * PERTWOPI, a),
+        unit > 200 ? CSNumber._helper.angleroundingfactor : null);
     if (num.indexOf("i*") === -1)
         return num + angleUnit;
     return "(" + num + ")" + angleUnit;
@@ -390,11 +393,17 @@ CSNumber.arctan = function(a) { //OK hässlich aber tuts.
 };
 
 
-//Das ist jetzt genau so wie in Cindy.
-//Da wurde das aber niemals voll auf complexe Zahlen umgestellt
-//Bei Beiden Baustellen machen!!!
-CSNumber.arctan2 = function(a, b) { //OK
-    var erg = CSNumber.real(Math.atan2(b.value.real, a.value.real));
+CSNumber.arctan2 = function(a, b) {
+    var erg;
+    if (b === undefined)
+        erg = CSNumber.real(Math.atan2(a.value.imag, a.value.real));
+    else if (CSNumber._helper.isReal(a) && CSNumber._helper.isReal(b))
+        erg = CSNumber.real(Math.atan2(b.value.real, a.value.real));
+    else {
+        var z = CSNumber.add(a, CSNumber.mult(CSNumber.complex(0, 1), b));
+        var r = CSNumber.sqrt(CSNumber.add(CSNumber.mult(a, a), CSNumber.mult(b, b)));
+        erg = CSNumber.mult(CSNumber.complex(0, -1), CSNumber.log(CSNumber.div(z, r)));
+    }
     return General.withUsage(erg, "Angle");
 };
 

@@ -273,16 +273,22 @@ webgltr["floor"] = [
   [{
     args: [type.float],
     res: type.int
-  }, (a => 'int(floor(' + a + '))')]
-  //TODO{args: [type.complex], res: type.complex}
+  }, (a => 'int(floor(' + a + '))')],
+  [{
+    args: [type.complex],
+    res: type.complex
+  }, usefunction('floor')]
 ];
 
 webgltr["round"] = [
   [{
     args: [type.float],
     res: type.int
-  }, (a => 'int(floor(' + a + '+.5))')]
-  //TODO{args: [type.complex], res: type.complex}
+  }, (a => 'int(floor(' + a + '+.5))')],
+  [{
+    args: [type.complex],
+    res: type.complex
+  }, (a => 'floor(' + a + '+vec2(.5))')]
 ];
 
 //- ("ceil", 1, OpCeil.class); @done(2015-03-17)
@@ -290,29 +296,39 @@ webgltr["ceil"] = [
   [{
     args: [type.float],
     res: type.int
-  }, (a => 'int(ceil(' + a + '))')]
-  //TODO{args: [type.complex], res: type.complex}
+  }, (a => 'int(ceil(' + a + '))')],
+  [{
+    args: [type.complex],
+    res: type.complex
+  }, usefunction('ceil')]
 ];
 
 webgltr["mod"] = [
   [int_fun$2, useinfix('%')],
-  [float_fun$2, usefunction('mod')]
-  //complex_fun$2 TODO
+  [float_fun$2, usefunction('mod')],
+  //[complex_fun$2, useincludefunction('modc')]
 ];
 
 webgltr["random"] = [
-  [float_fun$0, useincludefunction('random')]
-  //float_fun$1,
-  //complex_fun$1
+  [float_fun$0, useincludefunction('random')],
+  [float_fun$1, (a, cb) => (useincludefunction('random')([], cb) + '*' + a[0])],
+  [complex_fun$1, (a, cb) => ('vec2(' + useincludefunction('random')([], cb) + ',' + useincludefunction('random')([], cb) + ')*' + a[0])]
+
 ];
 
 
 webgltr['arctan2'] = [
-  [float_fun$2, usefunction('atan')],
-  [complex_fun$2, useincludefunction('arctanc')]
-  //- ("arctan2", 1, OpArcTan2_1.class); @done(2015-03-17)
-  //  {args:[{type: "list", length: 2, members: type.float}], res: type.float},
-  //  {args:[{type: "list", length: 2, members: type.complex}], res: type.complex}
+  [float_fun$2, args => ("atan(" + args[1] + ", " + args[0] + ")")], //reverse order
+  [complex_fun$2, useincludefunction('arctan2c')],
+  [complex2float_fun$1, useincludefunction('arctan2vec2')], //one complex argument
+  [{
+    args: [type.vec2],
+    res: type.float
+  }, useincludefunction('arctan2vec2')],
+  [{
+    args: [type.vec2complex],
+    res: type.complex
+  }, useincludefunction('arctan2vec2c')]
 ];
 
 
@@ -439,7 +455,11 @@ requires['arccosc'] = ['multc', 'negc', 'sqrtc', 'addc', 'logc'];
 requires['arcsinc'] = ['multc', 'negc', 'sqrtc', 'addc', 'logc'];
 requires['tanc'] = ['sinc', 'cosc', 'divc'];
 requires['arctanc'] = ['logc', 'addc', 'multc', 'subc'];
-
+requires['arctan2c'] = ['logc', 'divc', 'sqrtc', 'multc'];
+requires['arctan2vec2c'] = ['arctan2c'];
 requires['hue'] = ['hsv2rgb'];
+
+
+
 
 Object.freeze(requires);

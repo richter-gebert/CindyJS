@@ -15,9 +15,7 @@ Once an image is loaded you see its internal name and a preview of the image.
 By default, the image name is the original file name, but you can change the internal name by double clicking and editing it.
 Under this name the image can be accessed from within CindyScript.
 
-| ![Image](img/Media.png) |
-| ----------------------- |
-| **The Media Browser**   |
+![The Media Browser](img/Media.png)
 
 The images in the media browser can also be used as images for points and lines as well as background of the view port.
 This functionality is available via the [inspector](Inspector.md).
@@ -46,9 +44,7 @@ It creates the graphics given below.
     > drawimage(B,"myimage",scale->1.5,angle->30°);
     > drawimage(C,"myimage",ref->"lb");
 
-| ![Image](img/RostS1.png) |
-| ------------------------ |
-| ****                     |
+![Image](img/RostS1.png)
 
 **Reference points:**
 Reference points can be specified using the modifiers `ref`, `refx`, `refy`.
@@ -67,9 +63,7 @@ So the lower left corner may be specified either by `ref->"lb"` or by `ref->["l"
 All the position information can be used separately for the horizontal and vertical direction, for example with `refx->"l"`, `refx->100` or `refx->"10%"`.
 The following picture exemplifies the positions of a few reference points.
 
-| ![Image](img/Positions.png) |
-| --------------------------- |
-| ****                        |
+![Image](img/Positions.png)
 
 **Modifiers:**
 The modifiers of this function are listed below.
@@ -114,9 +108,7 @@ Observe how in the third row the two reference points are specified individually
     > drawimage(E,F,"MyImage",flipx->true);
     > drawimage(G,H,"MyImage",refx1->"20%",refy1->"50%",ref2->"rt");
 
-| ![Image](img/RostS2.png) |
-| ------------------------ |
-| ****                     |
+![Image](img/RostS2.png)
 
 **Modifiers:**
 
@@ -156,9 +148,7 @@ By default it is set to prefer the *nice* rendering.
     >  b=m*b;
     > );
 
-| ![Image](img/RostS3.png) |
-| ------------------------ |
-| ****                     |
+![Image](img/RostS3.png)
 
 ------
 
@@ -182,9 +172,7 @@ An example of this technique is given in the code below
     > drawimage(A,B,C,"MyImage"))
     > drawimage(A',B',C',"MyImage"))
 
-| ![Image](img/RostS8.png) |
-| ------------------------ |
-| ****                     |
+![Image](img/RostS8.png)
 
 **Modifiers:**
 The command supports the same modifiers as the previous one and the following additional ones.
@@ -199,6 +187,8 @@ The command supports the same modifiers as the previous one and the following ad
 
 #### Drawing an image: `drawimage(‹pos›,‹pos›,‹pos›,‹pos›,‹imagename›)`
 
+**Not available in CindyJS yet!**
+
 **Description:**
 Again this command is more general than the previous one.
 This time the four corners (or more generally reference points) are used to specify a projective transformation of the image.
@@ -212,9 +202,7 @@ The simplest usage is given by the following piece of code.
 The following picture shows the result of this statement.
 For clarity a projective grid has been added to the picture.
 
-| ![Image](img/RostS4.png) |
-| ------------------------ |
-| ****                     |
+![Image](img/RostS4.png)
 
 **Modifiers:**
 The command supports the same modifiers as the previous one and the following additional ones.
@@ -228,6 +216,8 @@ The command supports the same modifiers as the previous one and the following ad
 ------
 
 #### Deforming an image: `mapimage(‹imagename›,‹function›)`
+
+**Not available in CindyJS yet!**
 
 **Description:**
 This command is extremely powerful for deforming images by functions.
@@ -255,9 +245,7 @@ For better reference a grid has been added to drawing that illustrates the defor
     > yrange->(0,pi),resolution->30
     > );
 
-| ![Image](img/RostS5.png)   |
-| -------------------------- |
-| **A diet for Ritter Rost** |
+![A diet for Ritter Rost](img/RostS5.png)
 
 This example is similar to the previous one but now a complex function is used to
 specify the mapping.
@@ -274,9 +262,7 @@ specify the mapping.
     > xrange->(0,1),yrange->(0,pi),color->(0,0,0),alpha->0.5
     > ,resolutiony->30,resolutionx->10,step->10,size->1);
 
-| ![Image](img/RostS7.png) |
-| ------------------------ |
-| ****                     |
+![Image](img/RostS7.png)
 
 **Modifiers:**
 The function supports the following modifiers.
@@ -301,6 +287,8 @@ This is a pair of integer values that refers to the pixel width and height of th
 
 #### Getting pixel data: `imagergb(‹imagename›,‹int›,‹int›)`
 
+**Not available in CindyJS yet!**
+
 **Description:**
 The function `imagergb(‹imagename›,x,y)` delivers the raw data of the color information of the pixel at original position *(x,y)*.
 The operator returns a four-dimensional vector with the raw data of the color.
@@ -322,9 +310,7 @@ It plots a point with the corresponding color and opacity and by this creates a 
     >   )
     > )
 
-| ![Image](img/RostS9.png) |
-| ------------------------ |
-| ****                     |
+![Image](img/RostS9.png)
 
 ------
 
@@ -362,6 +348,8 @@ It is completely transparent.
 ------
 
 #### Removing an image: `removeimage(‹imagename›)`
+
+**Not available in CindyJS yet!**
 
 **Description:**
 This operator removes the image from the Media Browser.
@@ -441,13 +429,13 @@ This is illustrated by the following piece of code and the corresponding image.
     > drawimage(D,R,M,O,"image");
     > drawimage(C,R,M,Q,"image");
 
-| ![Image](img/Canvas4.png) |
-| ------------------------- |
-| ****                      |
+![Image](img/Canvas4.png)
 
 ------
 
 #### Painting on a canvas with one reference point: `canvas(‹pos›,‹imagename›,‹drawing code›)`
+
+**Not available in CindyJS yet!**
 
 **Description:**
 This operator uses `‹imagename›` as a canvas and positions it with respect to one reference point identically to the rules of the `drawimage(‹pos›,‹imagename›)` operator.

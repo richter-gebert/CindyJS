@@ -77,9 +77,7 @@ The code
 
 produces the picture below.
 
-| ![Image](img/TextX.png) |
-| ----------------------- |
-| ****                    |
+![Image](img/TextX.png)
 
 If the string expression contains a &lt;newline&gt; chacracter then this line-break is literally interpreted.
 By this it is easy to produce multilined text, as the following piece of code shows.
@@ -93,13 +91,13 @@ By this it is easy to produce multilined text, as the following piece of code sh
     D font = "18px sans-serif"
     D fillText("In Cinderella 'newlines' in Text\nare really used as line terminators.\nSo this text will appear as a\nmultilined text.", 250.5, 229.5)
 
-| ![Image](img/Newlines.png) |
-| -------------------------- |
-| ****                       |
+![Image](img/Newlines.png)
 
 ------
 
 #### Available font families: `fontfamilies()`
+
+**Not available in CindyJS yet!**
 
 **Description:**
 This operator produces a list of all font families that are available on your computer.
@@ -113,9 +111,7 @@ The following piece of code displays the names of some of these font families in
     >    drawtext((mod(i,5)*7,round(i/5)),families_i,family->families_i);
     > )
 
-| ![Image](img/Fonts.png) |
-| ----------------------- |
-| ****                    |
+![Image](img/Fonts.png)
 
 ------
 
@@ -144,6 +140,8 @@ The base of the unicode description can be changed with the `base` modifier.
 
 #### Test whether a string can be displayed: `candisplay(‹string›)`
 
+**Not available in CindyJS yet!**
+
 **Description:**
 This operator tests, whether a given string can be displayed in the currently chosen font.
 It returns a boolean value.
@@ -151,6 +149,8 @@ It returns a boolean value.
 ------
 
 #### Drawing tables: `drawtable(‹vec›,‹list›)`
+
+**Not available in CindyJS yet!**
 
 One- and two-dimensional lists can be easily drawn in a geometric view as tables.
 In the simplest form one has only to provide the list and a position where the table should be drawn.
@@ -164,9 +164,7 @@ The following code produces the picture below:
     > table=apply(x,(#,#^2,#^3,#^4));
     > drawtable((0,0),table);
 
-| ![Image](img/Table1X.png) |
-| ------------------------- |
-| ****                      |
+![Image](img/Table1X.png)
 
 **Modifiers:**
 The `drawtable` operator supports several modifiers to control the graphical appearance of the table.
@@ -216,6 +214,4 @@ A second table is used to create a heading for the table.
     >   color->(1,1,1)
     > );
 
-| ![Image](img/Table2X.png) |
-| ------------------------- |
-| ****                      |
+![Image](img/Table2X.png)

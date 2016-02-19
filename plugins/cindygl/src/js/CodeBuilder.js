@@ -128,7 +128,7 @@ CodeBuilder.prototype.computeType = function(expr, fun) { //expression, current 
     return type.string;
   } else {
     var argtypes = new Array(expr['args'].length);
-    for (let i in expr['args']) {
+    for (let i = 0; i < expr['args'].length; i++) {
       argtypes[i] = this.getType(expr['args'][i], fun);
     }
     //console.log(f);
@@ -443,7 +443,6 @@ CodeBuilder.prototype.determineUniforms = function(expr) {
 
   computeUniforms(expr, '');
   this.uniforms = uniforms;
-  console.log(this.uniforms);
 };
 
 
@@ -673,8 +672,14 @@ CodeBuilder.prototype.compile = function(expr, scope, generateTerm) {
 
     } else { //cindyscript-function
       fname = getPlainName(fname);
-      //  if(fname === 'regional')
-      //    return (generateTerm ? {term: '', type: voidt, code: ''} : {code: ''});
+      if (fname === 'regional')
+        return (generateTerm ? {
+          term: '',
+          type: type.voidt,
+          code: ''
+        } : {
+          code: ''
+        });
       let signature = matchSignature(fname, currenttype);
       if (signature === nada) {
         console.error("Could not find a signature for " + fname + '(' + currenttype.map(typeToString).join(', ') + ').\n' +
@@ -708,7 +713,7 @@ CodeBuilder.prototype.compile = function(expr, scope, generateTerm) {
 
     let code = '';
     let argterms = new Array(r.length);
-    for (let i in r) {
+    for (let i = 0; i < r.length; i++) {
       code += r[i].code;
       argterms[i] = this.castType(r[i].term, currenttype[i], targettype[i]);
 
@@ -825,7 +830,7 @@ CodeBuilder.prototype.compileFunction = function(fname, nargs) {
   for (let i in this.variables[fname]) {
     let doprint = true;
     let varname = this.variables[fname][i];
-    for (let j in vars) doprint &= (varname !== vars[j]);
+    for (let j = 0; j < vars.length; j++) doprint &= (varname !== vars[j]);
     if (doprint) code += webgltype[this.T[fname][varname]] + ' ' + varname + ';\n';
   }
   let r = self.compile(m.body, fname, !isvoid);

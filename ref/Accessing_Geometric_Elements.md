@@ -63,9 +63,7 @@ The following program changes the color of the points depending on their positio
 
 The following picture shows the application of the code to a random collection of points.
 
-| ![Image](img/ProgList1X.png)     |
-| -------------------------------- |
-| **Working with lists of points** |
+![Working with lists of points](img/ProgList1X.png)
 
 ### Properties of Geometric Objects
 
@@ -309,10 +307,14 @@ Also, it gives you fine grained control over all properties.
 
 #### Set a user attribute: `attribute(‹geo›,‹string1›,‹string2›)`
 
+**Not available in CindyJS yet!**
+
 **Description:**
 Sets the user attribute of &lt;geo&gt; identified by &lt;string1&gt; to the value &lt;string2&gt;.
 
 #### Read a user attribute: `attribute(‹geo›,‹string›)`
+
+**Not available in CindyJS yet!**
 
 **Description:**
 Returns the user attribute identified by &lt;string&gt; of the geometric element &lt;geo&gt; .
