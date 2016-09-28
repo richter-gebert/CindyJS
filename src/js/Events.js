@@ -128,6 +128,21 @@ function setuplisteners(canvas, data) {
         scheduleUpdate();
     }
 
+    function weakUpdatePostition(event) {
+        var rect = canvas.getBoundingClientRect();
+        var x = event.clientX - rect.left - canvas.clientLeft + 0.5;
+        var y = event.clientY - rect.top - canvas.clientTop + 0.5;
+        var pos = csport.to(x, y);
+        mouse.prevx = mouse.x;
+        mouse.prevy = mouse.y;
+        mouse.x = pos[0];
+        mouse.y = pos[1];
+        csmouse[0] = mouse.x;
+        csmouse[1] = mouse.y;
+        scheduleUpdate();
+    }
+
+
     if (data.keylistener === true) {
         addAutoCleaningEventListener(document, "keydown", function(e) {
             cs_keypressed(e);
@@ -360,12 +375,14 @@ console.log(e.changedTouches);
              move=activeTouches[id];
              console.log("MOVING: "+id);
              console.log(move);
-             updatePostition(activeTouchIDList[i]);
+             weakUpdatePostition(activeTouchIDList[i]);
+             traceMouseAndScripts();
+
              cs_mousedrag();
-             manage("mousemove");
              activeTouches[id]=move;
 
         }  
+        manage("mousemove");
 
         e.preventDefault();
     }
