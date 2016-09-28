@@ -240,8 +240,46 @@ function setuplisteners(canvas, data) {
         }
     });
 
+/*
+
+ var activeTouchID=-1;
+
+
+    function touchDown(e) {
+        if(activeTouchID!=-1){
+            return;
+        }
+
+        var activeTouchIDList=e.changedTouches;
+        if(activeTouchIDList.length==0) {
+          return;
+        }
+        activeTouchID=activeTouchIDList[0].identifier;
+        
+
+        updatePostition(e.targetTouches[0]);
+        cs_mousedown();
+        mouse.down = true;
+        //move = getmover(mouse);
+        manage("mousedown");
+        e.preventDefault();
+    }
+
+
 
     function touchMove(e) {
+
+        var activeTouchIDList=e.changedTouches;
+        var gotit=false;
+        for (var i=0; i < activeTouchIDList.length; i++) {
+             if(activeTouchIDList[i].identifier==activeTouchID){
+                gotit=true;
+             }
+        }  
+        if(!gotit) {return;}
+
+
+
         updatePostition(e.targetTouches[0]);
         if (mouse.down) {
             cs_mousedrag();
@@ -254,22 +292,107 @@ function setuplisteners(canvas, data) {
         e.preventDefault();
     }
 
-    function touchDown(e) {
-        updatePostition(e.targetTouches[0]);
-        cs_mousedown();
-        mouse.down = true;
-        //move = getmover(mouse);
-        manage("mousedown");
-        e.preventDefault();
-    }
 
     function touchUp(e) {
+
+        var activeTouchIDList=e.changedTouches;
+        var gotit=false;
+        for (var i=0; i < activeTouchIDList.length; i++) {
+             if(activeTouchIDList[i].identifier==activeTouchID){
+                gotit=true;
+             }
+        }  
+
+        if(!gotit) {return;}
+        activeTouchID=-1;
+
         mouse.down = false;
         cindy_cancelmove();
         stateContinueFromHere();
         cs_mouseup();
         manage("mouseup");
         scheduleUpdate();
+        e.preventDefault();
+    }
+*/
+
+
+    var activeTouchID=-1;
+    var activeTouches={};
+
+
+    function touchDown(e) {
+console.log("DOWN");
+console.log(e.changedTouches);
+
+
+        var activeTouchIDList=e.changedTouches;
+        if(activeTouchIDList.length==0) {
+          return;
+        }
+
+        for (var i=0; i < activeTouchIDList.length; i++) {
+             var id=activeTouchIDList[i].identifier;
+
+             updatePostition(activeTouchIDList[i]);
+             cs_mousedown();
+             mouse.down = true;
+             //move = getmover(mouse);
+             manage("mousedown");
+             activeTouches[id]=move;
+        } 
+
+
+        e.preventDefault();
+    }
+
+
+
+    function touchMove(e) {
+console.log("MOVE");
+console.log(e.changedTouches);
+        var activeTouchIDList=e.changedTouches;
+        for (var i=0; i < activeTouchIDList.length; i++) {
+             var id=activeTouchIDList[i].identifier;
+
+
+
+             move=activeTouches[id];
+             console.log("MOVING: "+id);
+             console.log(move);
+             updatePostition(activeTouchIDList[i]);
+             cs_mousedrag();
+             manage("mousemove");
+             activeTouches[id]=move;
+
+        }  
+
+        e.preventDefault();
+    }
+
+
+    function touchUp(e) {
+console.log("UP");
+console.log(e.changedTouches);
+
+        var activeTouchIDList=e.changedTouches;
+        for (var i=0; i < activeTouchIDList.length; i++) {
+             var id=activeTouchIDList[i].identifier;
+             move=activeTouches[id];
+
+             mouse.down = false;
+             cindy_cancelmove();
+             stateContinueFromHere();
+             cs_mouseup();
+             manage("mouseup");
+             scheduleUpdate();
+             delete activeTouches[id]; 
+
+        
+        }  
+
+        mouse.down=(Object.keys(activeTouches).length === 0);
+
         e.preventDefault();
     }
 
